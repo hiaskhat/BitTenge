@@ -17,7 +17,7 @@ struct CryptoManager {
     var delegate: CryptoManagerDelegate?
     
     let baseURL = "https://rest.coinapi.io/v1/exchangerate/"
-    let apiKey = "0F37F81A-2EDC-47B3-88BB-43F7EBE80DFF"
+    let apiKey = ""
     
     let cryptoArray = ["BTC", "XRP", "DOGE", "ETH", "BNB"]
     
