@@ -17,7 +17,7 @@ struct CryptoManager {
     var delegate: CryptoManagerDelegate?
     
     let baseURL = "https://rest.coinapi.io/v1/exchangerate/"
-    let apiKey = ""
+    let apiKey = cryptoAPI
     
     let cryptoArray = ["BTC", "XRP", "DOGE", "ETH", "BNB"]
     
@@ -38,7 +38,6 @@ struct CryptoManager {
                 if let safeData = data {
                     if let rate = self.parseJSON(safeData) {
                         self.delegate?.didCalculateRate(cryptoManager: self, rate: rate)
-                        print(rate)
                     }
                 }
             }

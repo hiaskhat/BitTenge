@@ -17,7 +17,7 @@ struct ConverterManager {
     var delegate: ConverterManagerDelegate?
     
     let baseURL = "https://free.currconv.com/api/v7/convert?q=USD_KZT&compact=ultra&apiKey="
-    let apiKey = ""
+    let apiKey = converterAPI
     
     func getConvertCurrency() {
         let urlString = "\(baseURL)\(apiKey)"

@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var dollarLabel: UILabel!
     @IBOutlet weak var cryptoPicker: UIPickerView!
     
-    var cryptoRate: Double = 0
+    var cryptoRate: Double = 0.0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,9 +25,15 @@ class ViewController: UIViewController {
         converterManager.delegate = self
         cryptoPicker.dataSource = self
         cryptoPicker.delegate = self
+        
+        updateUI()
+        
     }
 
-
+    func updateUI () {
+        cryptoManager.getCryptoPrice(for: cryptoManager.cryptoArray[0])
+        converterManager.getConvertCurrency()
+    }
 }
 
 //MARK: - UIPickerDataSource
@@ -55,9 +61,9 @@ extension ViewController: UIPickerViewDelegate {
         let selectedCrypto = cryptoManager.cryptoArray[row]
         cryptoManager.getCryptoPrice(for: selectedCrypto)
         converterManager.getConvertCurrency()
-        
-        
-    }
+        }
+    
+
 }
 
 //MARK: - CryptoManagerDelegate
@@ -65,16 +71,16 @@ extension ViewController: UIPickerViewDelegate {
 extension ViewController: CryptoManagerDelegate {
     
     func didCalculateRate(cryptoManager: CryptoManager, rate: Double) {
+        cryptoRate = rate
         DispatchQueue.main.async {
-            let rateToString = String(format: "%.5f", rate)
-            self.dollarLabel.text = rateToString
-            self.cryptoRate = rate
+            self.dollarLabel.text = String(format: "%.5f", rate)
         }
     }
     
     func didFailWithError(error: Error) {
         print(error)
     }
+    
 }
 
 //MARK: - ConverterManagerDelegate
@@ -82,11 +88,9 @@ extension ViewController: CryptoManagerDelegate {
 extension ViewController: ConverterManagerDelegate {
     
     func didCalculateCurrency(converterManager: ConverterManager, usdKZT: Double) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             let tengePrice = usdKZT * self.cryptoRate
-            let tengePriceToString = String(format: "%.5f", tengePrice)
-            self.tengeLabel.text = tengePriceToString
-            self.cryptoRate = 0
+            self.tengeLabel.text = String(format: "%.5f", tengePrice)
         }
     }
     
@@ -94,3 +98,5 @@ extension ViewController: ConverterManagerDelegate {
         print(error)
     }
 }
+
+
